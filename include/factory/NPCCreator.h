@@ -1,10 +1,16 @@
 #pragma once
 
 #include "../npc/NPC.h"
-#include <memory>
+#include <random>
 
-class INPCCreator {
+class NPCCreator {
 public:
-    virtual ~INPCCreator() = default;
-    virtual std::unique_ptr<INPC> createNPC(const std::string& name, int x, int y, int range) = 0;
+    virtual ~NPCCreator() = default;
+    
+    virtual std::shared_ptr<NPC> createNPC(const std::string& id) = 0;
+    virtual std::shared_ptr<NPC> createNPC(const std::string& id, const Point& p) = 0;
+    virtual std::shared_ptr<NPC> createNPC(const std::string& id, const Point& p, int moveRange, int attackRange) = 0;
+
+protected:
+    Point generateRandomPosition() const;
 };

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "./subject.h"
-#include <iostream>
+#include "./Subject.h"
+#include "../core/ThreadSafeConsole.h"
 
 class ConsoleLogger : public IObserver {
 public:
-    void update(const std::string& killEvent) override {
-        std::cout << "[Console log] " << killEvent << std::endl;
+    void update(const std::string& event) override {
+        TS_PRINTLN("[БОЙ] " + event);
     }
 };

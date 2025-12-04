@@ -1,23 +1,50 @@
 #include "../../include/npc/NPC.h"
+#include <random>
 
-INPC::INPC(const std::string& name, const Point& pos, int range) : name(name), position(pos), alive(true), attackRange(range) {}
+NPC::NPC(const std::string& id, const Point& p, int moveRange, int attackRange, char sym) : id(id), position(p), move_range(moveRange), attack_range(attackRange), symbol(sym), alive(true) {}
 
-std::string INPC::getName() const {return name;}
+const std::string& NPC::getID() const {return id;}
 
-const Point& INPC::getPosition() const {return position;}
+const Point& NPC::getPos() const {return position;}
 
-bool INPC::isAlive() const {return alive;}
+void NPC::setPos(const Point& newPos) {position = newPos;}
 
-void INPC::markDead() {alive = false;}
+void NPC::markDead() {alive = false;}
 
-int INPC::getAttackRange() const {return attackRange;}
+int NPC::getMoveRange() const {return move_range;}
 
-void INPC::setAttackRange(int range) {attackRange = range;}
+int NPC::getAttackRange() const {return attack_range;}
 
-double INPC::distanceTo(const INPC* other) const {
+char NPC::getSymbol() const {return symbol;}
+
+bool NPC::isAlive() const {return alive;}
+
+double NPC::distanceTo(const std::shared_ptr<NPC>& other) const {
     return position.distanceTo(other->position);
 }
 
-bool INPC::canAttack(INPC* target) const {
-    return isAlive() && target->isAlive() && distanceTo(target) <= attackRange;
+bool NPC::isInAttackRange(const std::shared_ptr<NPC>& target) const {
+    return alive && target->isAlive() && distanceTo(target) <= attack_range; 
+}
+
+Point NPC::calculateNextPosition() const {
+    // Thread-safe генератор случайных чисел
+    static thread_local std::mt19937 generator(std::random_device{}());
+    std::uniform_int_distribution<int> dist(-move_range, move_range);
+    
+    int dx = dist(generator);
+    int dy = dist(generator);
+    
+    int newX = position.getX() + dx;
+    int newY = position.getY() + dy;
+    
+    // Ограничиваем границы
+    newX = std::clamp(newX, 0, GameConfig::MAP_WIDTH - 1);
+    newY = std::clamp(newY, 0, GameConfig::MAP_HEIGHT - 1);
+    
+    return Point(newX, newY);
+}
+
+void NPC::save(std::ostream& os) const {
+    os << getType() << " " << id << " " << position << " " << move_range << " " << attack_range << std::endl;
 }

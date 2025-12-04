@@ -1,9 +1,7 @@
 #pragma once
 
-#include "./observer.h"
+#include "./Subject.h"
 #include <fstream>
-#include <stdexcept>
-
 
 class FileLogger : public IObserver {
 private:
@@ -12,11 +10,10 @@ private:
 public:
     FileLogger(const std::string& filename) : filename(filename) {}
 
-    void update(const std::string& killEvent) override {
-        std::ofstream file(filename, std::ios::app);    // std::ios::app - открытие файла в режиме "записи в конец" 
-
+    void update(const std::string& event) override {
+        std::ofstream file(filename, std::ios::app);
         if (file.is_open()) {
-            file << "[File log] " << killEvent << std::endl;
+            file << "[БОЙ] " << event << std::endl;
         }
     }
 };

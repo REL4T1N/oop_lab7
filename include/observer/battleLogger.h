@@ -1,23 +1,11 @@
 #pragma once
 
-#include "./subject.h"
+#include "./Subject.h"
 #include "../npc/NPC.h"
-
+#include "../core/ThreadSafeConsole.h"
 
 class BattleLogger : public ISubject {
 public:
-    void logKill(INPC* killer, INPC* victim) {
-        std::string event = killer->getName() + " (" + killer->getType() + ") убил " + victim->getName() + " (" + victim->getType() + ")";
-        notify(event);
-    }
-
-    void logBattleStart(int participants) {
-        std::string event = "=== НАЧАЛО БОЯ ===";
-        notify(event);
-    }
-
-    void logBattleEnd(int survivors) {
-        std::string event = "=== КОНЕЦ БОЯ. Выжило: " + std::to_string(survivors) + " ===";
-        notify(event);
-    }
+    void logCombat(std::shared_ptr<NPC> attacker, std::shared_ptr<NPC> defender, bool attackerWon);
+    void logGameEvent(const std::string& event);
 };

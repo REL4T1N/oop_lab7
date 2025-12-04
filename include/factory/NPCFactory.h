@@ -1,23 +1,29 @@
 #pragma once
 
-#include <memory>
-#include <unordered_map>
 #include "./NPCCreator.h"
-#include <vector>
-#include "./elfCreator.h"
-#include "./dragonCreator.h"
-#include "./druidCreator.h"
+#include "./OrcCreator.h"
+#include "./BearCreator.h"
+#include "./SquirrelCreator.h"
+#include "../core/ThreadSafeConsole.h"
 
+#include <unordered_map>
+#include <fstream>
+#include <vector>
 
 class NPCFactory {
 private:
-    std::unordered_map<std::string, std::unique_ptr<INPCCreator>> creators;
+    std::unordered_map<std::string, std::unique_ptr<NPCCreator>> creators;
+    int NPCCounter = 0;
+
+    std::string generateNPCID(const std::string& type);
 
 public:
     NPCFactory();
+    
+    std::shared_ptr<NPC> createRandomNPC();
+    std::shared_ptr<NPC> createNPC(const std::string& type);
+    std::shared_ptr<NPC> createNPC(const std::string& type, const Point& p);
 
-    std::unique_ptr<INPC> createNPC(const std::string& name, const std::string& type, int x, int y, int range);
-
-    std::vector<std::unique_ptr<INPC>> loadFromFile(const std::string& name);
-    void saveToFile(const std::string& filename, const std::vector<std::unique_ptr<INPC>>& npcs);
+    std::vector<std::shared_ptr<NPC>> loadFromFile(const std::string& filename);
+    void saveToFile(const std::string& filename, const std::vector<std::shared_ptr<NPC>>& npcs);
 };

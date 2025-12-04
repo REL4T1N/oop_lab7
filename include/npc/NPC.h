@@ -1,34 +1,41 @@
 #pragma once
 
-#include <iostream>
+#include "../core/Point.h"
+#include <memory>
 #include <string>
-#include "../geom/point.h"
 
-class Visitor;
+class Visitor; // предватерительно
 
-class INPC {
+class NPC {
 protected:
-    std::string name;
+    std::string id;
     Point position;
     bool alive;
-    int attackRange;
+    int move_range;
+    int attack_range;
+    char symbol; // symbol == type используется в мапе
 
 public:
-    INPC(const std::string& name, const Point& pos, int range);
-    virtual ~INPC() = default;
+    NPC(const std::string& name, const Point& p, int moveRange, int attackRange, char sym);
+    virtual ~NPC() = default;
+
+    const std::string& getID() const;
+    const Point& getPos() const;
+    void setPos(const Point& newPos);
+    void markDead();
+    int getMoveRange() const;
+    int getAttackRange() const;
+    char getSymbol() const;
+    bool isAlive() const;
 
     virtual std::string getType() const = 0;
-    virtual void attack(INPC* target) = 0;
-    virtual bool canAttack(INPC* target) const = 0;
+    virtual bool canAttack(const std::shared_ptr<NPC>& target) const = 0;
+    virtual void accept(Visitor &visitor) = 0;
 
-    std::string getName() const;
-    const Point& getPosition() const;
-    bool isAlive() const;
-    void markDead();
-    int getAttackRange() const;  
-    void setAttackRange(int range); 
+    double distanceTo(const std::shared_ptr<NPC>& other) const;
+    bool isInAttackRange(const std::shared_ptr<NPC>& target) const;
+    virtual Point calculateNextPosition() const;
 
-    double distanceTo(const INPC* other) const;
-
-    virtual void accept(Visitor& visitor) = 0;
+    // удобная запись в файл
+    virtual void save(std::ostream& os) const;
 };

@@ -1,16 +1,14 @@
 #pragma once
 
-// объявление заранее чтобы не было цикличесих импортов
-class Elf;
-class Dragon;
-class Druid;
-
+class Orc;
+class Squirrel;
+class Bear;
 
 class Visitor {
 public:
-    virtual ~Visitor() =  default;
+    virtual ~Visitor() = default;
 
-    virtual void visit(Elf& elf) = 0;
-    virtual void visit(Dragon& dragon) = 0;
-    virtual void visit(Druid& druid) = 0;
+    virtual void visit(Orc& orc) = 0;
+    virtual void visit(Squirrel& squirrel) = 0;
+    virtual void visit(Bear& bear) = 0;
 };
