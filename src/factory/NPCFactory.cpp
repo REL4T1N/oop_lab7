@@ -58,13 +58,26 @@ std::vector<std::shared_ptr<NPC>> NPCFactory::loadFromFile(const std::string &fi
         if (iss >> type >> id >> x >> y >> moveRange >> attackRange) {
             try {
                 Point pos(x, y);
-                auto npc = createNPC(type, pos);
+                // Create NPC with custom ranges from file
+                std::shared_ptr<NPC> npc;
+                if (type == "Медведь") {
+                    npc = std::make_shared<Bear>(id, pos, moveRange, attackRange);
+                } else if (type == "Орк") {
+                    npc = std::make_shared<Orc>(id, pos, moveRange, attackRange);
+                } else if (type == "Белка") {
+                    npc = std::make_shared<Squirrel>(id, pos, moveRange, attackRange);
+                } else {
+                    throw std::runtime_error("Неизвестный тип NPC: " + type);
+                }
+                
                 npcs.emplace_back(npc);
                 TS_PRINTLN("Загружен " + type + " из файла: " + id);
             }
             catch (const std::exception& e) {
                 TS_PRINTLN("Ошибка загрузки NPC: " + std::string(e.what()));
             }
+        } else {
+            TS_PRINTLN("Ошибка загрузки NPC: некорректный формат строки: " + line);
         }
     }
     return npcs;

@@ -7,7 +7,7 @@ Bear::Bear(const std::string& id, const Point& p, int moveRange, int attackRange
 std::string Bear::getType() const {return "Медведь";}
 
 bool Bear::canAttack(const std::shared_ptr<NPC>& target) const {
-    if (target->getID() == id) return false;
+    if (target->getID() == id || !isAlive() || !target->isAlive()) return false;
     std::string targetType = target->getType();
     return targetType == "Белка";
 }

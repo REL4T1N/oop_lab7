@@ -22,11 +22,11 @@ private:
         int aliveCount;
     };
 
+public:
     RenderData collectRenderData(const std::vector<std::shared_ptr<NPC>>& npcs, int elapsedSeconds, int remainingSeconds);
     
     void printMap(const std::vector<std::vector<char>>& map, const RenderData& data);
 
-public:
     void render(const std::vector<std::shared_ptr<NPC>>& npcs);
     void renderStats(const std::vector<std::shared_ptr<NPC>>& npcs, int elapsedSeconds, int remainingSeconds);
     

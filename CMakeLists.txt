@@ -41,21 +41,19 @@ add_custom_target(create_data_dir ALL
 # Добавляем зависимость, чтобы папка data создавалась перед сборкой
 add_dependencies(dungeon_editor create_data_dir)
 
-# ТЕСТЫ (если будут тестовые файлы)
-if(EXISTS "${CMAKE_SOURCE_DIR}/tests")
-    add_executable(tests 
-        tests/main_test.cpp
-        tests/geom_test.cpp
-        tests/npc_test.cpp
-        tests/factory_test.cpp
-        tests/visitor_test.cpp
-        tests/observer_test.cpp
-        ${CPP_SOURCES}
-    )
+# ТЕСТЫ
+add_executable(tests 
+    tests/main_test.cpp
+    tests/behaviorAndCore_test.cpp
+    tests/factory_test.cpp
+    tests/npc_test.cpp
+    tests/observerAndVisitor_test.cpp
+    tests/render_test.cpp
+    ${CPP_SOURCES}
+)
 
-    target_include_directories(tests PRIVATE include)
-    target_link_libraries(tests gtest gtest_main)
+target_include_directories(tests PRIVATE include)
+target_link_libraries(tests gtest gtest_main)
 
-    enable_testing()
-    add_test(NAME oop_lab7_tests COMMAND tests)
-endif()
+enable_testing()
+add_test(NAME oop_lab7_tests COMMAND tests)

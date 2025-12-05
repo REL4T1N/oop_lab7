@@ -2,8 +2,7 @@
 #include <iomanip>
 #include <sstream>
 
-MapRender::RenderData MapRender::collectRenderData(const std::vector<std::shared_ptr<NPC>>& npcs, 
-                                                  int elapsedSeconds, int remainingSeconds) {
+MapRender::RenderData MapRender::collectRenderData(const std::vector<std::shared_ptr<NPC>>& npcs, int elapsedSeconds, int remainingSeconds) {
     RenderData data;
     data.npcs = npcs;
     data.elapsedSeconds = elapsedSeconds;
