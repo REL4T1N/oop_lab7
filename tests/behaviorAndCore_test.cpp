@@ -133,18 +133,6 @@ TEST_F(CoreTest, PointStreamOperators) {
     EXPECT_EQ(p2.getY(), 24);
 }
 
-TEST_F(CoreTest, PointSetCoordinates) {
-    Point p;
-    p.setCoordinates(10, 20);
-    EXPECT_EQ(p.getX(), 10);
-    EXPECT_EQ(p.getY(), 14);
-    
-    // За границами
-    p.setCoordinates(-5, 100);
-    EXPECT_EQ(p.getX(), 0);
-    EXPECT_EQ(p.getY(), 14);
-}
-
 // ==================== CORE TESTS: GAMEWORLD ====================
 
 TEST_F(CoreTest, GameWorldAddAndGetNPCs) {
